@@ -13,7 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var platform_browser_1 = require("@angular/platform-browser");
+var common_1 = require("@angular/common");
 /**
  * Gets the width of the scrollbar.  Nesc for windows
  * http://stackoverflow.com/a/13382873/888165
@@ -40,7 +40,7 @@ var ScrollbarHelper = /** @class */ (function () {
     };
     ScrollbarHelper = __decorate([
         core_1.Injectable(),
-        __param(0, core_1.Inject(platform_browser_1.DOCUMENT)),
+        __param(0, core_1.Inject(common_1.DOCUMENT)),
         __metadata("design:paramtypes", [Object])
     ], ScrollbarHelper);
     return ScrollbarHelper;

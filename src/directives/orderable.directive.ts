@@ -3,7 +3,7 @@ import {
   QueryList, KeyValueDiffers, AfterContentInit, OnDestroy, Inject
 } from '@angular/core';
 import { DraggableDirective } from './draggable.directive';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 @Directive({ selector: '[orderable]' })
 export class OrderableDirective implements AfterContentInit, OnDestroy {

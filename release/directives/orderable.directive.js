@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var draggable_directive_1 = require("./draggable.directive");
-var platform_browser_1 = require("@angular/platform-browser");
+var common_1 = require("@angular/common");
 var OrderableDirective = /** @class */ (function () {
     function OrderableDirective(differs, document) {
         this.document = document;
@@ -156,7 +156,7 @@ var OrderableDirective = /** @class */ (function () {
     ], OrderableDirective.prototype, "draggables", void 0);
     OrderableDirective = __decorate([
         core_1.Directive({ selector: '[orderable]' }),
-        __param(1, core_1.Inject(platform_browser_1.DOCUMENT)),
+        __param(1, core_1.Inject(common_1.DOCUMENT)),
         __metadata("design:paramtypes", [core_1.KeyValueDiffers, Object])
     ], OrderableDirective);
     return OrderableDirective;
