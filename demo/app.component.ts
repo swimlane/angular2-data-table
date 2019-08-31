@@ -70,6 +70,7 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
               <li><a href="#basic-fixed" (click)="state='basic-fixed'">Fixed Row Height</a></li>
               <li><a href="#dynamic" (click)="state='dynamic'">Dynamic Row Height</a></li>
               <li><a href="#row-details" (click)="state='row-details'">Row Detail</a></li>
+              <li><a href="#row-grouping-detail" (click)="state='row-grouping-detail'">Row Group Details</a></li>
               <li><a href="#responsive" (click)="state='responsive'">Responsive</a></li>
             </ul>
           </li>
@@ -163,6 +164,7 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
 
         <!-- Paging -->
         <row-grouping-demo *ngIf="state === 'row-grouping'"></row-grouping-demo>
+        <row-grouping-details-demo *ngIf="state === 'row-grouping-detail'"></row-grouping-details-demo>
         <client-paging-demo *ngIf="state === 'client-paging'"></client-paging-demo>
         <server-paging-demo *ngIf="state === 'server-paging'"></server-paging-demo>
         <paging-scrolling-novirtualization-demo *ngIf="state === 'paging-scrolling-novirtualization'"></paging-scrolling-novirtualization-demo>

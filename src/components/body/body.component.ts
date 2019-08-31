@@ -57,7 +57,7 @@ import { MouseEvent } from '../../events';
           *ngFor="let group of temp; let i = index; trackBy: rowTrackingFn"
           [innerWidth]="innerWidth"
           [ngStyle]="getRowsStyles(group)"
-          [rowDetail]="rowDetail"
+          [rowDetail]="groupedRows ? null : rowDetail" 
           [groupHeader]="groupHeader"
           [offsetX]="offsetX"
           [detailRowHeight]="getDetailRowHeight(group[i], i)"
@@ -85,12 +85,18 @@ import { MouseEvent } from '../../events';
           >
           </datatable-body-row>
           <ng-template #groupedRowsTemplate>
+            <datatable-row-wrapper
+              *ngFor="let row of group.value; let i = index; trackBy: rowTrackingFn;"
+              [innerWidth]="innerWidth"
+              [rowDetail]="rowDetail"
+              [offsetX]="offsetX"
+              [detailRowHeight]="getDetailRowHeight(group[i],i)"
+              [row]="row"
+              [expanded]="getRowExpanded(row)"
+              [rowIndex]="getRowIndex(row[i])"
+              (rowContextmenu)="rowContextmenu.emit($event)"
+            >
             <datatable-body-row
-              *ngFor="
-                let row of group.value;
-                let i = index;
-                trackBy: rowTrackingFn
-              "
               tabindex="-1"
               [isSelected]="selector.getRowSelected(row)"
               [innerWidth]="innerWidth"
@@ -102,9 +108,9 @@ import { MouseEvent } from '../../events';
               [rowIndex]="getRowIndex(row)"
               [expanded]="getRowExpanded(row)"
               [rowClass]="rowClass"
-              (activate)="selector.onActivate($event, i)"
-            >
+              (activate)="selector.onActivate($event, i)">
             </datatable-body-row>
+          </datatable-row-wrapper>
           </ng-template>
         </datatable-row-wrapper>
         <datatable-summary-row
