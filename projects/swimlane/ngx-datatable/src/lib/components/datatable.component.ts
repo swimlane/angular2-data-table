@@ -45,6 +45,7 @@ import { DimensionsHelper } from '../services/dimensions-helper.service';
 import { throttleable } from '../utils/throttle';
 import { forceFillColumnWidths, adjustColumnWidths } from '../utils/math';
 import { sortRows } from '../utils/sort';
+import { id } from '../utils/id';
 
 @Component({
   selector: 'ngx-datatable',
@@ -994,6 +995,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       if (c.$$id === column.$$id) {
         idx = i;
         c.width = newValue;
+        // mark as changed for trackBy property
+        c.$$id = id();
 
         // set this so we can force the column
         // width distribution to be to this value
