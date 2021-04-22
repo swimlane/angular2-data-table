@@ -55,7 +55,9 @@ Whether the column can automatically resize to fill extra space. Default value: 
 
 ### `cellTemplate`: `TemplateRef`
 
-Angular TemplateRef allowing you to author custom body cell templates
+Angular TemplateRef allowing you to author custom body cell templates. 
+
+NOTE: When you use @ViewChild, make sure you initialize anything that depends on it on or after the ngOnInit lifecycle callback. Demo: https://github.com/swimlane/ngx-datatable/blob/master/src/app/templates/template-obj.component.ts
 
 ### `headerTemplate`: `TemplateRef`
 
