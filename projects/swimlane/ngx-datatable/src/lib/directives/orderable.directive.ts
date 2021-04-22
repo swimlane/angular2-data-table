@@ -77,7 +77,7 @@ export class OrderableDirective implements AfterContentInit, OnDestroy {
     for (const dragger of this.draggables.toArray()) {
       const elm = dragger.element;
       const left = parseInt(elm.offsetLeft.toString(), 0);
-      this.positions[dragger.dragModel.prop] = {
+      this.positions[dragger.dragModel.$$id] = {
         left,
         right: left + parseInt(elm.offsetWidth.toString(), 0),
         index: i++,
@@ -87,7 +87,7 @@ export class OrderableDirective implements AfterContentInit, OnDestroy {
   }
 
   onDragging({ element, model, event }: any): void {
-    const prevPos = this.positions[model.prop];
+    const prevPos = this.positions[model.$$id];
     const target = this.isTarget(model, event);
 
     if (target) {
@@ -109,7 +109,7 @@ export class OrderableDirective implements AfterContentInit, OnDestroy {
   }
 
   onDragEnd({ element, model, event }: any): void {
-    const prevPos = this.positions[model.prop];
+    const prevPos = this.positions[model.$$id];
 
     const target = this.isTarget(model, event);
     if (target) {
@@ -130,12 +130,12 @@ export class OrderableDirective implements AfterContentInit, OnDestroy {
     const y = event.y || event.clientY;
     const targets = this.document.elementsFromPoint(x, y);
 
-    for (const prop in this.positions) {
+    for (const id in this.positions) {
       // current column position which throws event.
-      const pos = this.positions[prop];
+      const pos = this.positions[id];
 
       // since we drag the inner span, we need to find it in the elements at the cursor
-      if (model.prop !== prop && targets.find((el: any) => el === pos.element)) {
+      if (model.$$id !== id && targets.find((el: any) => el === pos.element)) {
         return {
           pos,
           i
