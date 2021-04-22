@@ -30,6 +30,7 @@ import { INgxDatatableConfig } from '../ngx-datatable.module';
 import { groupRowsByParents, optionalGetterForProp } from '../utils/tree';
 import { TableColumn } from '../types/table-column.type';
 import { setColumnDefaults, translateTemplates } from '../utils/column-helper';
+import { deepValueGetter } from '../utils/column-prop-getters';
 import { ColumnMode } from '../types/column-mode.type';
 import { SelectionType } from '../types/selection.type';
 import { SortType } from '../types/sort.type';
@@ -88,7 +89,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     this.recalculate();
 
     if (this._rows && this._groupRowsBy) {
-      // If a column has been specified in _groupRowsBy created a new array with the data grouped by that row
+      // If a property has been specified in _groupRowsBy created a new array with the data grouped by that row
       this.groupedRows = this.groupArrayBy(this._rows, this._groupRowsBy);
     }
 
@@ -103,7 +104,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   }
 
   /**
-   * This attribute allows the user to set the name of the column to group the data with
+   * This attribute allows the user to set the name of the property to group the data with
    */
   @Input() set groupRowsBy(val: string) {
     if (val) {
@@ -741,7 +742,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Creates a map with the data grouped by the user choice of grouping index
    *
    * @param originalArray the original array passed via parameter
-   * @param groupByIndex  the index of the column to group the data by
+   * @param groupByIndex  the property of the row object to group the data by
    */
   groupArrayBy(originalArray: any, groupBy: any) {
     // create a map to hold groups with their corresponding results
@@ -749,7 +750,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     let i: number = 0;
 
     originalArray.forEach((item: any) => {
-      const key = item[groupBy];
+      const key = deepValueGetter(item, groupBy);
       if (!map.has(key)) {
         map.set(key, [item]);
       } else {
