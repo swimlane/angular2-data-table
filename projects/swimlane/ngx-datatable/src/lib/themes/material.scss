@@ -81,19 +81,22 @@ $datatable-summary-row-background-hover: #ddd !default;
   &.multi-click-selection {
     .datatable-body-row {
       &.active,
-      &.active .datatable-row-group {
+      &.active .datatable-row-group,
+      &.active .datatable-row-group .datatable-body-cell {
         background-color: $ngx-datatable-selected-active-background;
         color: $ngx-datatable-selected-active-color;
       }
 
       &.active:hover,
-      &.active:hover .datatable-row-group {
+      &.active:hover .datatable-row-group,
+      &.active:hover .datatable-row-group .datatable-body-cell {
         background-color: $ngx-datatable-selected-active-background-hover;
         color: $ngx-datatable-selected-active-color-hover;
       }
 
       &.active:focus,
-      &.active:focus .datatable-row-group {
+      &.active:focus .datatable-row-group,
+      &.active:focus .datatable-row-group .datatable-body-cell {
         background-color: $ngx-datatable-selected-active-background-focus;
         color: $ngx-datatable-selected-active-color-focus;
       }
