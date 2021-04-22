@@ -298,7 +298,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
       const userPipe: PipeTransform = this.column.pipe;
 
       if (userPipe) {
-        value = userPipe.transform(val);
+        value = userPipe.transform(val, this.row);
       } else if (value !== undefined) {
         value = val;
       }
