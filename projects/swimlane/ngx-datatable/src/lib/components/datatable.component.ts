@@ -606,15 +606,24 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Returns if all rows are selected.
    */
   get allRowsSelected(): boolean {
-    let allRowsSelected = this.rows && this.selected && this.selected.length === this.rows.length;
+    let eligibleForSelection = this.rows;
+
+    if (eligibleForSelection && this.selectCheck)
+      eligibleForSelection = eligibleForSelection.filter(this.selectCheck.bind(this));
+      
+    let allRowsSelected = (eligibleForSelection && this.selected && this.selected.length === eligibleForSelection.length);
 
     if (this.bodyComponent && this.selectAllRowsOnPage) {
       const indexes = this.bodyComponent.indexes;
-      const rowsOnPage = indexes.last - indexes.first;
-      allRowsSelected = this.selected.length === rowsOnPage;
+      let eligibleForSelectionOnPage = this._internalRows.slice(indexes.first, indexes.last);
+
+      if (this.selectCheck)
+        eligibleForSelectionOnPage = eligibleForSelectionOnPage.filter(this.selectCheck.bind(this));
+
+      allRowsSelected = (this.selected.length === eligibleForSelectionOnPage.length);
     }
 
-    return this.selected && this.rows && this.rows.length !== 0 && allRowsSelected;
+    return this.selected && eligibleForSelection && eligibleForSelection.length !== 0 && allRowsSelected;
   }
 
   element: HTMLElement;
@@ -1091,23 +1100,33 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       // before we splice, chk if we currently have all selected
       const first = this.bodyComponent.indexes.first;
       const last = this.bodyComponent.indexes.last;
-      const allSelected = this.selected.length === last - first;
+      let eligibleForSelectionOnPage = this._internalRows.slice(first, last);
+
+      if (this.selectCheck)
+        eligibleForSelectionOnPage = eligibleForSelectionOnPage.filter(this.selectCheck.bind(this));
+
+      const allSelected = eligibleForSelectionOnPage && this.selected.length === eligibleForSelectionOnPage.length;
 
       // remove all existing either way
       this.selected = [];
 
       // do the opposite here
       if (!allSelected) {
-        this.selected.push(...this._internalRows.slice(first, last));
+        this.selected.push(...eligibleForSelectionOnPage);
       }
     } else {
+
+      let eligibleForSelection = this.rows;
+      if (this.selectCheck)
+          eligibleForSelection = eligibleForSelection.filter(this.selectCheck.bind(this));
+
       // before we splice, chk if we currently have all selected
-      const allSelected = this.selected.length === this.rows.length;
+      const allSelected = eligibleForSelection && this.selected.length === eligibleForSelection.length;
       // remove all existing either way
       this.selected = [];
       // do the opposite here
       if (!allSelected) {
-        this.selected.push(...this.rows);
+        this.selected.push(...eligibleForSelection);
       }
     }
 

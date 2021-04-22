@@ -392,6 +392,35 @@ describe('DatatableComponent With Custom Templates', () => {
   });
 });
 
+describe('DatatableComponent With CheckBox Selection', () => {
+  beforeEach(async(() => setupTest(TestFixtureComponentWithCheckBoxSelection)));
+
+  it('should filter unselectable rows', () => {
+    const initialRows = [{ id: 5 }, { id: 20 }, { id: 12 }];
+    const columns = [
+      {
+        prop: 'id'
+      }
+    ];
+
+    const selectCheck = (row) => row.id !==5;
+
+    component.columns = columns;
+    component.rows = initialRows;
+    component.selectCheck = selectCheck;
+
+    fixture.detectChanges();
+    selectAll();
+    fixture.detectChanges();
+
+    const datatableComponent = fixture.debugElement.query(By.directive(DatatableComponent)).componentInstance;
+
+    expect(datatableComponent.selected).toBeTruthy();
+    expect(datatableComponent.selected.length).toBe(2);
+  });
+});
+
+
 @Component({
   template: ` <ngx-datatable [columns]="columns" [rows]="rows" [sorts]="sorts"> </ngx-datatable> `
 })
@@ -429,6 +458,24 @@ class TestFixtureComponentWithCustomTemplates {
   columnTwoProp: string;
 }
 
+@Component({
+  template: `
+    <ngx-datatable [rows]="rows" 
+                   [columns]="columns" 
+                   [selectionType]="'checkbox'"
+                   [selectCheck]="selectCheck">
+      <ngx-datatable-column [headerCheckboxable]="true" [checkboxable]="true">
+      </ngx-datatable-column>
+    </ngx-datatable>
+  `
+})
+class TestFixtureComponentWithCheckBoxSelection {
+  columns: any[] = [];
+  rows: any[] = [];
+  selectCheck: any = (row) => true;
+}
+
+
 function setupTest(componentClass) {
   return TestBed.configureTestingModule({
     declarations: [componentClass],
@@ -462,4 +509,11 @@ function textContent({ row, column }: { row: number; column: number }) {
   const bodyCellDe = bodyRowDe.queryAll(By.directive(DataTableBodyCellComponent))[columnIndex];
 
   return bodyCellDe.nativeElement.textContent;
+}
+
+function selectAll() {
+  const columnIndex = 0;
+  const headerCellDe = fixture.debugElement.queryAll(By.css('datatable-header-cell'))[columnIndex];
+  const de = headerCellDe.query(By.css('input[type="checkbox"]'));
+  de.triggerEventHandler('change', null);
 }
