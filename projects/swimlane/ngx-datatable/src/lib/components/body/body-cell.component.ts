@@ -45,12 +45,12 @@ export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
             <i *ngIf="treeStatus === 'expanded' || treeStatus === 'disabled'" class="icon datatable-icon-down"></i>
           </span>
         </button>
-        <ng-template
+        <ng-container
           *ngIf="column.treeToggleTemplate"
           [ngTemplateOutlet]="column.treeToggleTemplate"
           [ngTemplateOutletContext]="{ cellContext: cellContext }"
         >
-        </ng-template>
+        </ng-container>
       </ng-container>
 
       <span *ngIf="!column.cellTemplate" [title]="sanitizedValue" [innerHTML]="value"> </span>
