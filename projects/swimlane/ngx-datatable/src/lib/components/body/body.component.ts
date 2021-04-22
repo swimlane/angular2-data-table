@@ -8,13 +8,14 @@ import {
   ViewChild,
   OnInit,
   OnDestroy,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy, SkipSelf
 } from '@angular/core';
 import { ScrollerComponent } from './scroller.component';
 import { SelectionType } from '../../types/selection.type';
 import { columnsByPin, columnGroupWidths } from '../../utils/column';
 import { RowHeightCache } from '../../utils/row-height-cache';
 import { translateXY } from '../../utils/translate';
+import {ScrollbarHelper} from '../../services/scrollbar-helper.service'
 
 @Component({
   selector: 'datatable-body',
@@ -269,7 +270,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   /**
    * Creates an instance of DataTableBodyComponent.
    */
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef, @SkipSelf() private scrollbarHelper: ScrollbarHelper) {
     // declare fn here so we can get access to the `this` property
     this.rowTrackingFn = (index: number, row: any): any => {
       const idx = this.getRowIndex(row);
@@ -355,11 +356,18 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    */
   onBodyScroll(event: any): void {
     const scrollYPos: number = event.scrollYPos;
-    const scrollXPos: number = event.scrollXPos;
+    let scrollXPos: number = event.scrollXPos;
 
     // if scroll change, trigger update
     // this is mainly used for header cell positions
     if (this.offsetY !== scrollYPos || this.offsetX !== scrollXPos) {
+      const {total} = this.columnGroupWidths;
+      const scrillbarWidth = this.scrollbarHelper.width | 0;
+      const maxScrollXPos = total - this.innerWidth + scrillbarWidth;
+      if (scrollXPos >= maxScrollXPos) {
+        scrollXPos = maxScrollXPos;
+        this.scroller.setOffsetX(scrollXPos);
+      }
       this.scroll.emit({
         offsetY: scrollYPos,
         offsetX: scrollXPos

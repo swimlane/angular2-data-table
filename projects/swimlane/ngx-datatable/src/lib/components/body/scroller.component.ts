@@ -73,6 +73,12 @@ export class ScrollerComponent implements OnInit, OnDestroy {
     }
   }
 
+  setOffsetX(offsetX: number): void {
+    if (this.parentElement) {
+      this.parentElement.scrollLeft = offsetX;
+    }
+  }
+
   onScrolled(event: MouseEvent): void {
     const dom: Element = <Element>event.currentTarget;
     requestAnimationFrame(() => {
