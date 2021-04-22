@@ -130,4 +130,29 @@ describe('DataTableBodyComponent', () => {
       expect(styles).toBeDefined();
     });
   });
+
+  describe('Row Grouping', () => {
+    it('should all group have collapsed state when all group are collapsed by user', () => {
+      component.groupExpansionDefault = true;
+      const rows = [
+        { name: 'Schroeder Mathews', gender: 'male', company: 'Polarium', age: 67 },
+        { name: 'Lynda Mendoza', gender: 'female', company: 'Dogspa', age: 10 }
+      ];
+      const [firstRow, secondRow] = rows;
+      component.rows = [...rows];
+      component.groupRowsBy = 'age';
+      component.rowIdentity = (x: any) => {
+        if (component.groupRowsBy) {
+          // each group in groupedRows are stored as {key, value: [rows]},
+          // where key is the groupRowsBy index
+          return x.key;
+        } else {
+          return x;
+        }
+      };
+      component.toggleRowExpansion(firstRow);
+      component.toggleRowExpansion(secondRow);
+      expect(component.isAllGroupCollapsed).toEqual(true);
+    });
+  });
 });
