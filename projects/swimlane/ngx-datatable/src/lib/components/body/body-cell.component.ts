@@ -244,7 +244,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   value: any;
   sortDir: SortDirection;
   isFocused = false;
-  onCheckboxChangeFn = this.onCheckboxChange.bind(this);
+  onCheckboxChangeFn: () => any = this.onCheckboxChange.bind(this);
   activateFn = this.activate.emit.bind(this.activate);
 
   cellContext: any;
