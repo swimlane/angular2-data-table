@@ -35,6 +35,7 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
           [selectionType]="SelectionType.checkbox"
           [selectAllRowsOnPage]="false"
           [displayCheck]="displayCheck"
+          [selectCheck]="displayCheck"
           (activate)="onActivate($event)"
           (select)="onSelect($event)"
         >
