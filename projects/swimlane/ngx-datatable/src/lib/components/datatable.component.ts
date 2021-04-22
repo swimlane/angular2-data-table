@@ -731,7 +731,9 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
         this._internalColumns = translateTemplates(arr);
         setColumnDefaults(this._internalColumns);
         this.recalculateColumns();
-        this.sortInternalRows();
+        if (!this.externalSorting) {
+          this.sortInternalRows();
+        }
         this.cd.markForCheck();
       }
     }
