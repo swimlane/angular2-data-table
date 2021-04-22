@@ -56,10 +56,10 @@ import { translateXY } from '../../utils/translate';
           [rowDetail]="rowDetail"
           [groupHeader]="groupHeader"
           [offsetX]="offsetX"
-          [detailRowHeight]="getDetailRowHeight(group && group[i], i)"
+          [detailRowHeight]="getDetailRowHeight(groupedRows ? group[i] : group, i)"
           [row]="group"
           [expanded]="getRowExpanded(group)"
-          [rowIndex]="getRowIndex(group && group[i])"
+          [rowIndex]="getRowIndex(groupedRows ? group[i] : group)"
           (rowContextmenu)="rowContextmenu.emit($event)"
         >
           <datatable-body-row
