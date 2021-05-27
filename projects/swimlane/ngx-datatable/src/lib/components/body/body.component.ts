@@ -56,7 +56,7 @@ import { translateXY } from '../../utils/translate';
           [rowDetail]="rowDetail"
           [groupHeader]="groupHeader"
           [offsetX]="offsetX"
-          [detailRowHeight]="getDetailRowHeight(group && group[i], i)"
+          [detailRowHeight]="getDetailRowHeight(!groupedRows ? group : group && group[i], i)"
           [row]="group"
           [expanded]="getRowExpanded(group)"
           [rowIndex]="getRowIndex(group && group[i])"
