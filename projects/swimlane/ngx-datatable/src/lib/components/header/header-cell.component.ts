@@ -24,9 +24,16 @@ import { SortDirection } from '../../types/sort-direction.type';
         [ngTemplateOutletContext]="targetMarkerContext"
       >
       </ng-template>
-      <label *ngIf="isCheckboxable" class="datatable-checkbox">
-        <input type="checkbox" [checked]="allRowsSelected" (change)="select.emit(!allRowsSelected)" />
-      </label>
+      <ng-container *ngIf="isCheckboxable">
+        <input
+          type="checkbox"
+          class="datatable-checkbox"
+          [checked]="allRowsSelected"
+          (change)="select.emit(!allRowsSelected)"
+          [attr.id]="checkboxId"
+        />
+        <label [attr.for]="checkboxId"></label>
+      </ng-container>
       <span *ngIf="!column.headerTemplate" class="datatable-header-cell-wrapper">
         <span class="datatable-header-cell-label draggable" (click)="onSort()" [innerHTML]="name"> </span>
       </span>
@@ -74,6 +81,10 @@ export class DataTableHeaderCellComponent {
 
   get column(): TableColumn {
     return this._column;
+  }
+
+  get checkboxId(): string {
+    return `checkbox_${this.column.$$id}`;
   }
 
   @HostBinding('style.height.px')

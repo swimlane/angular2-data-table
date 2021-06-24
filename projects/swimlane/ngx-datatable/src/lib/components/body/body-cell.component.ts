@@ -26,12 +26,16 @@ export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="datatable-body-cell-label" [style.margin-left.px]="calcLeftMargin(column, row)">
-      <label
-        *ngIf="column.checkboxable && (!displayCheck || displayCheck(row, column, value))"
-        class="datatable-checkbox"
-      >
-        <input type="checkbox" [checked]="isSelected" (click)="onCheckboxChange($event)" />
-      </label>
+      <ng-container *ngIf="column.checkboxable && (!displayCheck || displayCheck(row, column, value))">
+        <input
+          type="checkbox"
+          class="datatable-checkbox"
+          [checked]="isSelected"
+          (click)="onCheckboxChange($event)"
+          [attr.id]="checkboxId"
+        />
+        <label [attr.for]="checkboxId"></label>
+      </ng-container>
       <ng-container *ngIf="column.isTreeColumn">
         <button
           *ngIf="!column.treeToggleTemplate"
@@ -164,6 +168,10 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
 
   get treeStatus(): TreeStatus {
     return this._treeStatus;
+  }
+
+  get checkboxId(): string {
+    return `checkbox_${this.rowIndex}_${this.column.$$id}`;
   }
 
   @Output() activate: EventEmitter<any> = new EventEmitter();

@@ -413,53 +413,58 @@ $datatable-summary-row-background-hover: #ddd !default;
  * Checkboxes
 **/
 .datatable-checkbox {
-  position: relative;
-  margin: 0;
-  cursor: pointer;
-  vertical-align: middle;
-  display: inline-block;
-  box-sizing: border-box;
-  padding: 0;
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
 
-  input[type='checkbox'] {
+  ~ label {
+    display: inline-flex;
     position: relative;
+    top: 2px;
+    width: 1rem;
+    height: 1rem;
     margin: 0 1rem 0 0;
     cursor: pointer;
-    outline: none;
+    pointer-events: auto;
 
-    &:before {
-      -webkit-transition: all 0.3s ease-in-out;
-      -moz-transition: all 0.3s ease-in-out;
-      transition: all 0.3s ease-in-out;
-      content: '';
+    // visual checkbox clone and its checkmark
+    &::before,
+    &::after {
       position: absolute;
-      left: 0;
-      z-index: 1;
-      width: 1rem;
-      height: 1rem;
+      content: '';
+      width: inherit;
+      height: inherit;
+    }
+
+    // visual checkbox clone
+    &::before {
+      background-color: #fff;
+    }
+
+    // checkmark
+    &::after {
       border: 2px solid #f2f2f2;
+      transition: all 0.3s ease-in-out;
     }
+  }
 
-    &:checked:before {
-      -webkit-transform: rotate(-45deg);
-      -moz-transform: rotate(-45deg);
-      -ms-transform: rotate(-45deg);
-      transform: rotate(-45deg);
-      height: 0.5rem;
-      border-color: #009688;
-      border-top-style: none;
-      border-right-style: none;
+  &:checked {
+    ~ label {
+      &::after {
+        transform: translateY(2px) rotate(-45deg) scale(0.9);
+        height: 0.5rem;
+        border-color: #009688;
+        border-top-style: none;
+        border-right-style: none;
+      }
     }
+  }
 
-    &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 1rem;
-      height: 1rem;
-      background: #fff;
-      cursor: pointer;
+  &:disabled {
+    ~ label {
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.5;
     }
   }
 }
