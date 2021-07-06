@@ -9,7 +9,9 @@ import {
   OnInit,
   OnDestroy,
   HostBinding,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 
 import { MouseEvent } from '../../events';
@@ -22,7 +24,7 @@ import { MouseEvent } from '../../events';
   },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ScrollerComponent implements OnInit, OnDestroy {
+export class ScrollerComponent implements OnInit, OnDestroy, OnChanges {
   @Input() scrollbarV: boolean = false;
   @Input() scrollbarH: boolean = false;
 
@@ -64,6 +66,14 @@ export class ScrollerComponent implements OnInit, OnDestroy {
     if (this._scrollEventListener) {
       this.parentElement.removeEventListener('scroll', this._scrollEventListener);
       this._scrollEventListener = null;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['scrollbarV'] || changes['scrollbarH']) {
+      // ensure scrollEventListener is added/removed when scrollbar config is changed
+      this.ngOnDestroy();
+      this.ngOnInit();
     }
   }
 
